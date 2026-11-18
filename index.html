@@ -136,15 +136,40 @@ button.action:active {
 }
 
 #win-screen {
-    display: none;
+     display: none;
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+
     max-width: 430px;
+    min-height: 480px;
     margin: 20px auto;
-    padding: 25px 20px;
+    padding: 30px 22px;
+
     border-radius: 20px;
-    background: rgba(255,255,255,.8);
+    color: white;
+
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+
+    box-shadow: 0 8px 25px rgba(70,40,70,.25);
+
     animation: appear .7s ease;
 }
+ #win-screen::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
 
+    background: linear-gradient(
+        to bottom,
+        rgba(35,20,45,.35),
+        rgba(35,20,45,.65)
+    );
+}   
+    
 @keyframes appear {
     from {
         opacity: 0;
@@ -157,22 +182,24 @@ button.action:active {
 }
 
 #win-screen h1 {
-    color: #b45d79;
+    color: #fff0d9;
+    text-shadow: 0 2px 8px rgba(0,0,0,.5);
 }
 
 #win-screen .sunset-art {
     font-size: 48px;
-    margin: 15px;
+    margin: 15px
 }
 
 #win-screen p {
     line-height: 1.8;
+    text-shadow: 0 1px 5px rgba(0,0,0,.6);
 }
 
 .special-message {
     font-size: 18px;
     font-style: italic;
-    color: #a05d78;
+    color: #ffe3c2;
 }
 
 @media(max-width: 380px) {
@@ -268,6 +295,10 @@ let imageURL = "./253259.jpeg";
     
 document.getElementById("preview-image").src = imageURL;
 
+// Use the completed puzzle photo as the winning screen background
+document.getElementById("win-screen").style.backgroundImage =
+    url("${imageURL}");
+    
 const puzzle = document.getElementById("puzzle");
 
 let board = [];
