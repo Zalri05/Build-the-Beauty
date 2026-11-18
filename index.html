@@ -136,39 +136,51 @@ button.action:active {
 }
 
 #win-screen {
-     display: none;
-    position: relative;
-    isolation: isolate;
-    overflow: hidden;
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 999;
 
-    max-width: 430px;
-    min-height: 480px;
-    margin: 20px auto;
-    padding: 30px 22px;
+    width: 100%;
+    height: 100vh;
+    min-height: 100dvh;
+    max-width: none;
+    margin: 0;
+    padding: 35px 25px;
 
-    border-radius: 20px;
-    color: white;
+    overflow-y: auto;
 
+    background-image: url("./253259.jpeg");
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
 
-    box-shadow: 0 8px 25px rgba(70,40,70,.25);
+    color: white;
+    text-align: center;
 
-    animation: appear .7s ease;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+
+    animation: appear .8s ease;
 }
- #win-screen::before {
+    
+#win-screen::before {
     content: "";
-    position: absolute;
+    position: fixed;
     inset: 0;
-    z-index: -1;
+    z-index: 0;
 
-    background: linear-gradient(
-        to bottom,
-        rgba(35,20,45,.35),
-        rgba(35,20,45,.65)
-    );
-}   
+    background: rgba(25, 15, 35, 0.48);
+}
+    
+#win-screen > * {
+    position: relative;
+    z-index: 1;
+    max-width: 430px;
+    margin-left: auto;
+    margin-right: auto;
+}
     
 @keyframes appear {
     from {
@@ -183,19 +195,18 @@ button.action:active {
 
 #win-screen h1 {
     color: #fff0d9;
-    text-shadow: 0 2px 8px rgba(0,0,0,.5);
+    text-shadow: 0 2px 10px rgba(0,0,0,.7);
 }
 
 #win-screen .sunset-art {
     font-size: 48px;
-    margin: 15px
+    margin: 20px auto;
 }
 
 #win-screen p {
     line-height: 1.8;
-    text-shadow: 0 1px 5px rgba(0,0,0,.6);
+    text-shadow: 0 2px 6px rgba(0,0,0,.8);
 }
-
 .special-message {
     font-size: 18px;
     font-style: italic;
@@ -294,11 +305,7 @@ button.action:active {
 let imageURL = "./253259.jpeg";
     
 document.getElementById("preview-image").src = imageURL;
-
-// Use the completed puzzle photo as the winning screen background
-document.getElementById("win-screen").style.backgroundImage =
-    'url("${imageURL}")';
-    
+   
 const puzzle = document.getElementById("puzzle");
 
 let board = [];
@@ -407,8 +414,9 @@ function moveTile(index) {
             document.getElementById("game-page").style.display =
                 "none";
 
-            document.getElementById("win-screen").style.display =
-                "block";
+            const winScreen = document.getElementById("win-screen");
+
+            winScreen.style.display = "flex";
         }, 350);
     }
 }
