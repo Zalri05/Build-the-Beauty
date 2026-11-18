@@ -137,22 +137,25 @@ button.action:active {
 
 #win-screen {
     display: none;
+
     position: fixed;
     inset: 0;
-    z-index: 999;
+    z-index: 9999;
 
-    width: 100%;
+    width: 100vw;
     height: 100vh;
     min-height: 100dvh;
     max-width: none;
+
     margin: 0;
-    padding: 35px 25px;
+    padding: 35px 20px;
 
     overflow-y: auto;
+    border-radius: 0;
 
-    background-image: url("./253259.jpeg");
+    background-color: #392b42;
     background-size: cover;
-    background-position: center;
+    background-position: center center;
     background-repeat: no-repeat;
 
     color: white;
@@ -164,22 +167,46 @@ button.action:active {
 
     animation: appear .8s ease;
 }
-    
+
 #win-screen::before {
     content: "";
     position: fixed;
     inset: 0;
     z-index: 0;
+    pointer-events: none;
 
     background: rgba(25, 15, 35, 0.48);
 }
-    
+
 #win-screen > * {
     position: relative;
     z-index: 1;
+
+    width: 100%;
     max-width: 430px;
     margin-left: auto;
     margin-right: auto;
+}
+
+#win-screen h1 {
+    color: #fff0d9;
+    text-shadow: 0 2px 10px rgba(0,0,0,.7);
+}
+
+#win-screen p {
+    line-height: 1.8;
+    text-shadow: 0 2px 6px rgba(0,0,0,.8);
+}
+
+#win-screen .special-message {
+    font-size: 18px;
+    font-style: italic;
+    color: #ffe3c2;
+}
+
+#win-screen .sunset-art {
+    font-size: 48px;
+    margin: 20px auto;
 }
     
 @keyframes appear {
@@ -191,26 +218,6 @@ button.action:active {
         opacity: 1;
         transform: translateY(0);
     }
-}
-
-#win-screen h1 {
-    color: #fff0d9;
-    text-shadow: 0 2px 10px rgba(0,0,0,.7);
-}
-
-#win-screen .sunset-art {
-    font-size: 48px;
-    margin: 20px auto;
-}
-
-#win-screen p {
-    line-height: 1.8;
-    text-shadow: 0 2px 6px rgba(0,0,0,.8);
-}
-.special-message {
-    font-size: 18px;
-    font-style: italic;
-    color: #ffe3c2;
 }
 
 @media(max-width: 380px) {
@@ -411,12 +418,19 @@ function moveTile(index) {
         gameFinished = true;
 
         setTimeout(() => {
-            document.getElementById("game-page").style.display =
-                "none";
 
             const winScreen = document.getElementById("win-screen");
 
+            // Load the actual sunset photo
+            winScreen.style.backgroundImage =
+                url("${imageURL}");
+
+            // Hide the puzzle
+            document.getElementById("game-page").style.display = "none";
+    
+            // Show the full-screen sunset
             winScreen.style.display = "flex";
+
         }, 350);
     }
 }
