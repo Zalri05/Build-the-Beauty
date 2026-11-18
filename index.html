@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Last Sunset 🌅</title>
+
+<style>
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    padding: 20px 12px;
+    font-family: Georgia, serif;
+    text-align: center;
+    color: #684c68;
+    background: linear-gradient(
+        160deg,
+        #ffe0c5,
+        #f5b6bd,
+        #c5a1c9
+    );
+}
+
+h1 {
+    font-size: 30px;
+    margin: 10px 0;
+    color: #9c5d72;
+}
+
+.subtitle {
+    font-size: 14px;
+    margin-bottom: 20px;
+}
+
+.game-card {
+    width: 100%;
+    max-width: 430px;
+    margin: auto;
+    padding: 18px;
+    border-radius: 20px;
+    background: rgba(255,255,255,.65);
+    box-shadow: 0 8px 25px rgba(105,65,95,.15);
+}
+
+.stats {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 15px;
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+#puzzle {
+    width: 100%;
+    aspect-ratio: 1;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 4px;
+    padding: 5px;
+    border-radius: 12px;
+    background: #fff0e9;
+    overflow: hidden;
+}
+
+.tile {
+    position: relative;
+    border: none;
+    border-radius: 5px;
+    background-repeat: no-repeat;
+    cursor: pointer;
+    touch-action: manipulation;
+    transition: filter .15s, transform .15s;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.tile:not(.empty):active {
+    filter: brightness(1.15);
+    transform: scale(.97);
+}
+
+.tile.empty {
+    background: rgba(195,145,170,.15);
+    border: 2px dashed rgba(165,110,140,.4);
+    cursor: default;
+}
+
+.tile:focus-visible {
+    outline: 3px solid #a45f83;
+    outline-offset: -3px;
+}
+
+.instructions {
+    font-family: Arial, sans-serif;
+    font-size: 13px;
+    line-height: 1.6;
+    margin: 15px 0;
+}
+
+.buttons {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+}
+
+button.action {
+    padding: 13px 18px;
+    min-height: 46px;
+    border: none;
+    border-radius: 25px;
+    background: #d77e91;
+    color: white;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+    touch-action: manipulation;
+}
+
+button.action:active {
+    transform: scale(.96);
+}
+
+#preview {
+    display: none;
+    margin-top: 15px;
+}
+
+#preview img {
+    width: 100%;
+    border-radius: 12px;
+}
+
+#win-screen {
+    display: none;
+    max-width: 430px;
+    margin: 20px auto;
+    padding: 25px 20px;
+    border-radius: 20px;
+    background: rgba(255,255,255,.8);
+    animation: appear .7s ease;
+}
+
+@keyframes appear {
+    from {
+        opacity: 0;
+        transform: translateY(15px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+#win-screen h1 {
+    color: #b45d79;
+}
+
+#win-screen .sunset-art {
+    font-size: 48px;
+    margin: 15px;
+}
+
+#win-screen p {
+    line-height: 1.8;
+}
+
+.special-message {
+    font-size: 18px;
+    font-style: italic;
+    color: #a05d78;
+}
+
+@media(max-width: 380px) {
+    h1 {
+        font-size: 25px;
+    }
+
+    .game-card {
+        padding: 12px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div id="game-page">
+
+    <h1>🌅 The Last Sunset</h1>
+
+    <p class="subtitle">
+        A little puzzle, a beautiful moment.
+    </p>
+
+    <div class="game-card">
+
+        <div class="stats">
+            <span>🧩 Moves: <span id="moves">0</span></span>
+            <span>✨ Pieces: <span id="pieces">0/8</span></span>
+        </div>
+
+        <div id="puzzle"></div>
+
+        <p class="instructions">
+            Rearrange the pieces to restore the sunset.
+            Tap a tile beside the empty space to move it.
+        </p>
+
+        <div class="buttons">
+            <button class="action" onclick="shufflePuzzle()">
+                🔀 Shuffle
+            </button>
+
+            <button class="action" onclick="togglePreview()">
+                👀 Preview
+            </button>
+        </div>
+
+        <div id="preview">
+            <p>Here's the picture you're completing:</p>
+            <img id="preview-image" alt="Completed sunset puzzle">
+        </div>
+
+    </div>
+
+</div>
+
+<div id="win-screen">
+
+    <h1>You Restored the Sunset! 🌅</h1>
+
+    <div class="sunset-art">🌇✨🌸</div>
+
+    <p>
+        Every little piece has found its place.
+        And now, look at the beautiful picture
+        you've put together.
+    </p>
+
+    <p class="special-message">
+        "Even the most beautiful sunsets eventually fade,
+        but their colors stay in our memories."
+    </p>
+
+    <p>
+        I hope you never run out of reasons to watch
+        the sunset, appreciate little things,
+        and find beauty in every day. ❤️
+    </p>
+
+    <p>Thank you for spending a little moment here.</p>
+
+    <button class="action" onclick="restartGame()">
+        🌸 Play Again
+    </button>
+
+</div>
+
+<script>
+
+// Sunset illustration
+const sunsetSVG = `
+<svg xmlns="http://www.w3.org/2000/svg"
+     viewBox="0 0 900 900"
+     preserveAspectRatio="none">
+
+<defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#9276aa"/>
+        <stop offset="35%" stop-color="#d88ba8"/>
+        <stop offset="65%" stop-color="#ffb17d"/>
+        <stop offset="100%" stop-color="#f9d5a1"/>
+    </linearGradient>
+
+    <linearGradient id="sea" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#d9869b"/>
+        <stop offset="100%" stop-color="#675f91"/>
+    </linearGradient>
+
+    <radialGradient id="glow">
+        <stop offset="0%" stop-color="#fff6c4"/>
+        <stop offset="100%" stop-color="#ffd28d" stop-opacity="0"/>
+    </radialGradient>
+</defs>
+
+<!-- Sky -->
+<rect width="900" height="900" fill="url(#sky)"/>
+
+<!-- Sun glow -->
+<circle cx="450" cy="470" r="230" fill="url(#glow)"/>
+
+<!-- Sun -->
+<circle cx="450" cy="470" r="100" fill="#fff0b2"/>
+
+<!-- Distant clouds -->
+<g fill="#f8c2bd" opacity=".65">
+    <ellipse cx="180" cy="300" rx="100" ry="22"/>
+    <ellipse cx="250" cy="285" rx="75" ry="27"/>
+    <ellipse cx="700" cy="330" rx="110" ry="25"/>
+    <ellipse cx="770" cy="310" rx="70" ry="24"/>
+</g>
+
+<!-- Birds -->
+<g fill="none" stroke="#765d7d" stroke-width="7"
+   stroke-linecap="round">
+    <path d="M110 200 Q135 170 160 200 Q185 170 210 200"/>
+    <path d="M680 190 Q700 170 720 190 Q740 170 760 190"/>
+    <path d="M550 270 Q565 255 580 270 Q595 255 610 270"/>
+</g>
+
+<!-- Horizon -->
+<rect x="0" y="580" width="900" height="320"
+      fill="url(#sea)"/>
+
+<!-- Sun reflection -->
+<path d="M370 570 L530 570 L650 900 L250 900 Z"
+      fill="#ffd6a0" opacity=".38"/>
+
+<!-- Water reflections -->
+<g fill="none" stroke="#ffe3c1"
+   stroke-linecap="round" opacity=".65">
+    <path d="M350 625 H550" stroke-width="9"/>
+    <path d="M300 670 H600" stroke-width="7"/>
+    <path d="M230 725 H670" stroke-width="6"/>
+    <path d="M160 780 H740" stroke-width="5"/>
+    <path d="M280 835 H620" stroke-width="7"/>
+</g>
+
+<!-- Small distant island -->
+<path d="M0 590 Q100 540 210 585
+         Q270 600 340 585
+         L0 640 Z"
+      fill="#665777"/>
+
+<path d="M900 590 Q790 550 700 585
+         Q650 600 590 585
+         L900 640 Z"
+      fill="#665777"/>
+
+<!-- Foreground silhouettes -->
+<path d="M0 820 Q130 760 250 830
+         Q350 860 450 825
+         Q600 770 750 830
+         Q820 850 900 800
+         L900 900 L0 900 Z"
+      fill="#514d72"/>
+
+<!-- Little flowers -->
+<g fill="#f9c2c1">
+    <circle cx="100" cy="790" r="9"/>
+    <circle cx="115" cy="780" r="9"/>
+    <circle cx="130" cy="790" r="9"/>
+    <circle cx="115" cy="800" r="9"/>
+    <circle cx="115" cy="790" r="5" fill="#ffe5a5"/>
+
+    <circle cx="780" cy="800" r="9"/>
+    <circle cx="795" cy="790" r="9"/>
+    <circle cx="810" cy="800" r="9"/>
+    <circle cx="795" cy="810" r="9"/>
+    <circle cx="795" cy="800" r="5" fill="#ffe5a5"/>
+</g>
+
+</svg>
+`;
+
+const imageURL =
+    "data:image/svg+xml;charset=utf-8," +
+    encodeURIComponent(sunsetSVG);
+
+document.getElementById("preview-image").src = imageURL;
+
+const puzzle = document.getElementById("puzzle");
+
+let board = [];
+let moves = 0;
+let gameFinished = false;
+
+// Create tile elements
+function createPuzzle() {
+
+    puzzle.innerHTML = "";
+
+    board.forEach((tile, index) => {
+
+        const button = document.createElement("button");
+        button.className = "tile";
+
+        if (tile === 8) {
+
+            button.classList.add("empty");
+            button.disabled = true;
+            button.setAttribute("aria-label", "Empty space");
+
+        } else {
+
+            const row = Math.floor(tile / 3);
+            const col = tile % 3;
+
+            button.style.backgroundImage =
+                `url("${imageURL}")`;
+
+            button.style.backgroundSize = "300% 300%";
+
+            button.style.backgroundPosition =
+                `${col * 50}% ${row * 50}%`;
+
+            button.setAttribute(
+                "aria-label",
+                `Puzzle piece ${tile + 1}`
+            );
+
+            button.addEventListener("click", () => {
+                moveTile(index);
+            });
+
+        }
+
+        puzzle.appendChild(button);
+
+    });
+
+    updateStats();
+}
+
+// Update counters
+function updateStats() {
+
+    document.getElementById("moves").textContent = moves;
+
+    let correct = 0;
+
+    board.forEach((tile, index) => {
+        if (tile === index && tile !== 8) {
+            correct++;
+        }
+    });
+
+    document.getElementById("pieces").textContent =
+        `${correct}/8`;
+}
+
+// Check neighboring tiles
+function isAdjacent(index1, index2) {
+
+    const row1 = Math.floor(index1 / 3);
+    const col1 = index1 % 3;
+
+    const row2 = Math.floor(index2 / 3);
+    const col2 = index2 % 3;
+
+    return (
+        Math.abs(row1 - row2) +
+        Math.abs(col1 - col2) === 1
+    );
+}
+
+// Move tile into empty space
+function moveTile(index) {
+
+    if (gameFinished) return;
+
+    const emptyIndex = board.indexOf(8);
+
+    if (!isAdjacent(index, emptyIndex)) return;
+
+    [board[index], board[emptyIndex]] =
+        [board[emptyIndex], board[index]];
+
+    moves++;
+
+    createPuzzle();
+
+    if (checkWin()) {
+        gameFinished = true;
+
+        setTimeout(() => {
+            document.getElementById("game-page").style.display =
+                "none";
+
+            document.getElementById("win-screen").style.display =
+                "block";
+        }, 350);
+    }
+}
+
+// Check if solved
+function checkWin() {
+
+    return board.every((tile, index) =>
+        tile === index
+    );
+
+}
+
+// Shuffle using legal moves
+function shufflePuzzle() {
+
+    board = [0,1,2,3,4,5,6,7,8];
+
+    let previousEmpty = -1;
+
+    for (let i = 0; i < 200; i++) {
+
+        const emptyIndex = board.indexOf(8);
+
+        let options = [];
+
+        for (let j = 0; j < 9; j++) {
+
+            if (
+                isAdjacent(j, emptyIndex) &&
+                j !== previousEmpty
+            ) {
+                options.push(j);
+            }
+
+        }
+
+        const choice =
+            options[Math.floor(Math.random() * options.length)];
+
+        previousEmpty = emptyIndex;
+
+        [board[choice], board[emptyIndex]] =
+            [board[emptyIndex], board[choice]];
+
+    }
+
+    moves = 0;
+    gameFinished = false;
+
+    createPuzzle();
+
+}
+
+// Preview toggle
+function togglePreview() {
+
+    const preview = document.getElementById("preview");
+
+    preview.style.display =
+        preview.style.display === "block"
+        ? "none"
+        : "block";
+
+}
+
+// Restart game
+function restartGame() {
+
+    document.getElementById("win-screen").style.display =
+        "none";
+
+    document.getElementById("game-page").style.display =
+        "block";
+
+    document.getElementById("preview").style.display =
+        "none";
+
+    shufflePuzzle();
+
+}
+
+// Start game
+restartGame();
+
+</script>
+
+</body>
+</html>
