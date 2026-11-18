@@ -17,12 +17,7 @@ body {
     font-family: Georgia, serif;
     text-align: center;
     color: #684c68;
-    background: linear-gradient(
-        160deg,
-        #ffe0c5,
-        #f5b6bd,
-        #c5a1c9
-    );
+    background: linear-gradient(160deg, #ffe0c5, #f5b6bd, #c5a1c9);
 }
 
 h1 {
@@ -135,6 +130,8 @@ button.action:active {
     border-radius: 12px;
 }
 
+/* FULL SCREEN WINNING PAGE */
+
 #win-screen {
     display: none;
 
@@ -142,15 +139,14 @@ button.action:active {
     inset: 0;
     z-index: 9999;
 
-    width: 100vw;
+    width: 100%;
     height: 100vh;
-    min-height: 100dvh;
-    max-width: none;
+    height: 100dvh;
 
     margin: 0;
     padding: 35px 20px;
-
     overflow-y: auto;
+
     border-radius: 0;
 
     background-color: #392b42;
@@ -168,17 +164,8 @@ button.action:active {
     animation: appear .8s ease;
 }
 
-    @keyframes appear {
-    from {
-        opacity: 0;
-        transform: translateY(15px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-    
+/* DARK TRANSPARENT OVERLAY */
+
 #win-screen::before {
     content: "";
     position: fixed;
@@ -189,14 +176,28 @@ button.action:active {
     background: rgba(25, 15, 35, 0.48);
 }
 
+/* MESSAGE ABOVE THE OVERLAY */
+
 #win-screen > * {
     position: relative;
     z-index: 1;
 
     width: 100%;
     max-width: 430px;
+
     margin-left: auto;
     margin-right: auto;
+}
+
+@keyframes appear {
+    from {
+        opacity: 0;
+        transform: translateY(15px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 #win-screen h1 {
@@ -219,7 +220,7 @@ button.action:active {
     font-size: 48px;
     margin: 20px auto;
 }
-    
+
 @media(max-width: 380px) {
     h1 {
         font-size: 25px;
@@ -233,6 +234,8 @@ button.action:active {
 </head>
 
 <body>
+
+<!-- GAME PAGE -->
 
 <div id="game-page">
 
@@ -257,6 +260,7 @@ button.action:active {
         </p>
 
         <div class="buttons">
+
             <button class="action" onclick="shufflePuzzle()">
                 🔀 Shuffle
             </button>
@@ -264,6 +268,7 @@ button.action:active {
             <button class="action" onclick="togglePreview()">
                 👀 Preview
             </button>
+
         </div>
 
         <div id="preview">
@@ -274,6 +279,9 @@ button.action:active {
     </div>
 
 </div>
+
+
+<!-- WINNING MESSAGE -->
 
 <div id="win-screen">
 
@@ -306,20 +314,25 @@ button.action:active {
 
 </div>
 
+
 <script>
 
-// Sunset illustration
-let imageURL = "./253259.jpeg";
-    
+// IMAGE LOCATION
+// Make sure the filename matches your GitHub image.
+
+const imageURL = "./253259.jpeg";
+
 document.getElementById("preview-image").src = imageURL;
-   
+
 const puzzle = document.getElementById("puzzle");
 
 let board = [];
 let moves = 0;
 let gameFinished = false;
 
-// Create tile elements
+
+// CREATE PUZZLE
+
 function createPuzzle() {
 
     puzzle.innerHTML = "";
@@ -366,7 +379,9 @@ function createPuzzle() {
     updateStats();
 }
 
-// Update counters
+
+// UPDATE COUNTERS
+
 function updateStats() {
 
     document.getElementById("moves").textContent = moves;
@@ -374,16 +389,21 @@ function updateStats() {
     let correct = 0;
 
     board.forEach((tile, index) => {
+
         if (tile === index && tile !== 8) {
             correct++;
         }
+
     });
 
     document.getElementById("pieces").textContent =
         `${correct}/8`;
+
 }
 
-// Check neighboring tiles
+
+// CHECK NEIGHBORING TILES
+
 function isAdjacent(index1, index2) {
 
     const row1 = Math.floor(index1 / 3);
@@ -398,7 +418,9 @@ function isAdjacent(index1, index2) {
     );
 }
 
-// Move tile into empty space
+
+// MOVE TILE
+
 function moveTile(index) {
 
     if (gameFinished) return;
@@ -415,27 +437,36 @@ function moveTile(index) {
     createPuzzle();
 
     if (checkWin()) {
+
         gameFinished = true;
 
         setTimeout(() => {
 
-            const winScreen = document.getElementById("win-screen");
+            const winScreen =
+                document.getElementById("win-screen");
 
-            // Load the actual sunset photo
+            // IMPORTANT: SET THE FULL-SCREEN PHOTO
             winScreen.style.backgroundImage =
-                url("${imageURL}");
+                `url("${imageURL}")`;
 
-            // Hide the puzzle
-            document.getElementById("game-page").style.display = "none";
-    
-            // Show the full-screen sunset
+            // HIDE THE GAME
+            document.getElementById("game-page").style.display =
+                "none";
+
+            // SHOW THE WINNING MESSAGE
             winScreen.style.display = "flex";
 
+            // PREVENT BACKGROUND SCROLLING
+            document.body.style.overflow = "hidden";
+
         }, 350);
+
     }
 }
 
-// Check if solved
+
+// CHECK IF PUZZLE IS SOLVED
+
 function checkWin() {
 
     return board.every((tile, index) =>
@@ -444,7 +475,9 @@ function checkWin() {
 
 }
 
-// Shuffle using legal moves
+
+// SHUFFLE PUZZLE
+
 function shufflePuzzle() {
 
     board = [0,1,2,3,4,5,6,7,8];
@@ -485,7 +518,9 @@ function shufflePuzzle() {
 
 }
 
-// Preview toggle
+
+// PREVIEW TOGGLE
+
 function togglePreview() {
 
     const preview = document.getElementById("preview");
@@ -497,7 +532,9 @@ function togglePreview() {
 
 }
 
-// Restart game
+
+// RESTART GAME
+
 function restartGame() {
 
     document.getElementById("win-screen").style.display =
@@ -509,11 +546,15 @@ function restartGame() {
     document.getElementById("preview").style.display =
         "none";
 
+    document.body.style.overflow = "auto";
+
     shufflePuzzle();
 
 }
 
-// Start game
+
+// START GAME
+
 restartGame();
 
 </script>
