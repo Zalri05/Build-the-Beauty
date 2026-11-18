@@ -57,7 +57,7 @@ h1 {
 
 #puzzle {
     width: 100%;
-    aspect-ratio: 1;
+    aspect-ratio: 3/2;
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 4px;
@@ -264,114 +264,8 @@ button.action:active {
 <script>
 
 // Sunset illustration
-const sunsetSVG = `
-<svg xmlns="http://www.w3.org/2000/svg"
-     viewBox="0 0 900 900"
-     preserveAspectRatio="none">
-
-<defs>
-    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
-        <stop offset="0%" stop-color="#9276aa"/>
-        <stop offset="35%" stop-color="#d88ba8"/>
-        <stop offset="65%" stop-color="#ffb17d"/>
-        <stop offset="100%" stop-color="#f9d5a1"/>
-    </linearGradient>
-
-    <linearGradient id="sea" x1="0" y1="0" x2="0" y2="1">
-        <stop offset="0%" stop-color="#d9869b"/>
-        <stop offset="100%" stop-color="#675f91"/>
-    </linearGradient>
-
-    <radialGradient id="glow">
-        <stop offset="0%" stop-color="#fff6c4"/>
-        <stop offset="100%" stop-color="#ffd28d" stop-opacity="0"/>
-    </radialGradient>
-</defs>
-
-<!-- Sky -->
-<rect width="900" height="900" fill="url(#sky)"/>
-
-<!-- Sun glow -->
-<circle cx="450" cy="470" r="230" fill="url(#glow)"/>
-
-<!-- Sun -->
-<circle cx="450" cy="470" r="100" fill="#fff0b2"/>
-
-<!-- Distant clouds -->
-<g fill="#f8c2bd" opacity=".65">
-    <ellipse cx="180" cy="300" rx="100" ry="22"/>
-    <ellipse cx="250" cy="285" rx="75" ry="27"/>
-    <ellipse cx="700" cy="330" rx="110" ry="25"/>
-    <ellipse cx="770" cy="310" rx="70" ry="24"/>
-</g>
-
-<!-- Birds -->
-<g fill="none" stroke="#765d7d" stroke-width="7"
-   stroke-linecap="round">
-    <path d="M110 200 Q135 170 160 200 Q185 170 210 200"/>
-    <path d="M680 190 Q700 170 720 190 Q740 170 760 190"/>
-    <path d="M550 270 Q565 255 580 270 Q595 255 610 270"/>
-</g>
-
-<!-- Horizon -->
-<rect x="0" y="580" width="900" height="320"
-      fill="url(#sea)"/>
-
-<!-- Sun reflection -->
-<path d="M370 570 L530 570 L650 900 L250 900 Z"
-      fill="#ffd6a0" opacity=".38"/>
-
-<!-- Water reflections -->
-<g fill="none" stroke="#ffe3c1"
-   stroke-linecap="round" opacity=".65">
-    <path d="M350 625 H550" stroke-width="9"/>
-    <path d="M300 670 H600" stroke-width="7"/>
-    <path d="M230 725 H670" stroke-width="6"/>
-    <path d="M160 780 H740" stroke-width="5"/>
-    <path d="M280 835 H620" stroke-width="7"/>
-</g>
-
-<!-- Small distant island -->
-<path d="M0 590 Q100 540 210 585
-         Q270 600 340 585
-         L0 640 Z"
-      fill="#665777"/>
-
-<path d="M900 590 Q790 550 700 585
-         Q650 600 590 585
-         L900 640 Z"
-      fill="#665777"/>
-
-<!-- Foreground silhouettes -->
-<path d="M0 820 Q130 760 250 830
-         Q350 860 450 825
-         Q600 770 750 830
-         Q820 850 900 800
-         L900 900 L0 900 Z"
-      fill="#514d72"/>
-
-<!-- Little flowers -->
-<g fill="#f9c2c1">
-    <circle cx="100" cy="790" r="9"/>
-    <circle cx="115" cy="780" r="9"/>
-    <circle cx="130" cy="790" r="9"/>
-    <circle cx="115" cy="800" r="9"/>
-    <circle cx="115" cy="790" r="5" fill="#ffe5a5"/>
-
-    <circle cx="780" cy="800" r="9"/>
-    <circle cx="795" cy="790" r="9"/>
-    <circle cx="810" cy="800" r="9"/>
-    <circle cx="795" cy="810" r="9"/>
-    <circle cx="795" cy="800" r="5" fill="#ffe5a5"/>
-</g>
-
-</svg>
-`;
-
-const imageURL =
-    "data:image/svg+xml;charset=utf-8," +
-    encodeURIComponent(sunsetSVG);
-
+let imgaeURL = "253259.jpeg
+    
 document.getElementById("preview-image").src = imageURL;
 
 const puzzle = document.getElementById("puzzle");
